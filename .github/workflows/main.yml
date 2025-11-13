@@ -1,4 +1,4 @@
-name: CI Pipeline - Monitoring Dashboard
+name: CICD Pipeline - Monitoring Dashboard
 
 on:
   workflow_dispatch: # Manual trigger only
