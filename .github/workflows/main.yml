@@ -1,0 +1,25 @@
+name: CI Pipeline - Monitoring Dashboard
+
+on:
+  workflow_dispatch: # Manual trigger only
+
+jobs:
+  build-and-push:
+    runs-on: windows-latest
+    if: github.ref == 'refs/heads/develop'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Docker login
+      run: echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+    - name: Build and Push Backend Docker Image
+      run: |
+        docker build -t vinaykumarrajanna/monitoring-backend:latest ./monitoring-backend
+        docker push vinaykumarrajanna/monitoring-backend:latest
+
+    - name: Build and Push Frontend Docker Image
+      run: |
+        docker build -t vinaykumarrajanna/monitoring-frontend:latest ./monitoring-frontend
+        docker push vinaykumarrajanna/monitoring-frontend:latest
