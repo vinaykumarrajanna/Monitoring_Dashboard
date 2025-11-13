@@ -1,0 +1,15 @@
+body {
+    font-family: sans-serif;
+    padding: 30px;
+}
+.metrics {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.card {
+    background: #eee;
+    padding: 15px;
+    border-radius: 8px;
+    min-width: 120px;
+}
