@@ -20,6 +20,9 @@ monitoring_dashboard/
 ├── namespace.yaml                # Kubernetes namespace manifest
 ├── backend-deployment.yaml       # K8s backend deployment + NodePort service
 ├── frontend-deployment.yaml      # K8s frontend deployment + NodePort service
+├── .github/
+│   └── workflows/
+│       └── cicd.yml              # GitHub Actions workflow for CI/CD (build & push images)
 └── README.md                     # This documentation
 ```
 
@@ -38,8 +41,9 @@ monitoring_dashboard/
 **Architecture:**  
 - **Backend** (Python/Flask): Simulates metrics for CPU usage, latency, and request count at `/metrics`. CORS enabled for cross-origin.
 - **Frontend** (HTML/JavaScript): Polls the backend’s `/metrics` and displays real-time metrics in a chart and stats format.
+- **CI/CD:** GitHub Actions workflow (`.github/workflows/cicd.yml`) automatically builds and pushes Docker images to Docker Hub when you push code.
 
-Both services are containerized and can be orchestrated with Docker or deployed on Kubernetes (tested with Minikube).
+Both services are containerized and can be orchestrated with Docker or deployed on Kubernetes (Minikube).
 
 ---
 
@@ -83,15 +87,14 @@ For Docker Compose, update the fetch URL in `app.js` to `http://localhost:8080/m
 
 ## Kubernetes (Minikube)
 
-Full production-like setup for cluster-based deployments.
+Production-like setup for cluster-based deployments.
 
-### 1. Build and Push Images
+### 1. Build and Push Images  
 
 ```sh
 docker build -t vinaykumarrajanna/monitoring-backend:latest ./monitoring-backend
 docker build -t vinaykumarrajanna/monitoring-frontend:latest ./monitoring-frontend
 
-# If using Docker Hub:
 docker push vinaykumarrajanna/monitoring-backend:latest
 docker push vinaykumarrajanna/monitoring-frontend:latest
 ```
@@ -121,5 +124,11 @@ kubectl port-forward svc/frontend-svc 8081:80 -n monitoring-dashboard
   - Frontend: [http://localhost:8081](http://localhost:8081)
 
 Open `index.html` directly from your local machine, and make sure the fetch URL in `app.js` uses `http://localhost:8082/metrics` for testing with Kubernetes port-forward.
+
+---
+
+**Note:**  
+A GitHub Actions workflow (`.github/workflows/cicd.yml`) is included and automatically builds and pushes the Docker images to Docker Hub on code push.  
+This enables seamless CI/CD and guarantees images are available for Kubernetes deployments.
 
 ---
