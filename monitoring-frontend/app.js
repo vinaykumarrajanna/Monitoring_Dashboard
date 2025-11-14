@@ -60,7 +60,7 @@ function updateDashboard(metrics) {
 }
 
 function pollMetrics() {
-    fetch('http://localhost:8082/metrics')
+    fetch('http://192.168.49.2:32000/metrics')
         .then(res => res.json())
         .then(data => {
             updateDashboard(data);
